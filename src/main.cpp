@@ -26,7 +26,7 @@ unsigned long lastScanTime = 0;
 // Functions
 
 // getUID() turns the card's UID bytes into text, for example "4A 1F 9C 02"
-String getUID()
+ String getUID()
 {
   String uid = "";
   for (byte i = 0; i < rfid.uid.size; i++)
@@ -160,7 +160,6 @@ else
 }
 
   // Timer
-  
   if (indicatorOn == true && millis() - indicatorStart >= indicatorTime)
 {
   onTimerExpired();
