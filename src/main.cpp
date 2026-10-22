@@ -9,6 +9,9 @@
 
 MFRC522 rfid(RFID_SS, RFID_RST);
 
+String authorizedUIDs[] = {"D0 3B 80 5F"};
+int numAuthorized = 1;
+
 // Functions
 
 // getUID() turns the card's UID bytes into text, for example "4A 1F 9C 02"
@@ -31,6 +34,18 @@ String getUID()
   return uid;
 }
 
+bool isAuthorized(String uid)
+{
+  for (int i = 0; i < numAuthorized; i++)
+  {
+    if (uid == authorizedUIDs[i])
+    {
+      return true;
+    }
+  }
+  return false;
+}
+
 void setup()
 {
   Serial.begin(115200);
@@ -49,14 +64,23 @@ void setup()
 void loop()
 {
   // Card detection
-  if (rfid.PICC_IsNewCardPresent() == true && rfid.PICC_ReadCardSerial() == true)
-  {
-    String uid = getUID();
-      Serial.print("Card UID: ");
-      Serial.println(uid);
+if (rfid.PICC_IsNewCardPresent() == true && rfid.PICC_ReadCardSerial() == true)
+{
+  String uid = getUID();
+  Serial.print("Card UID: ");
+  Serial.println(uid);
 
-        rfid.PICC_HaltA();
-  }
+  rfid.PICC_HaltA();
+}
+
+if (isAuthorized(uid) == true)
+{
+  Serial.println("ACCESS GRANTED");
+}
+else
+{
+  Serial.println("ACCESS DENIED");
+}
 
   // Timer
 }
