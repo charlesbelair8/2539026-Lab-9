@@ -118,7 +118,6 @@ void onCardScanned(String uid)
   }
 }
 
-
 void setup()
 {
   Serial.begin(115200);
@@ -138,31 +137,23 @@ void setup()
 }
 
 void loop()
-{
-  String uid = getUID();
-  // Card detection
-if (rfid.PICC_IsNewCardPresent() == true && rfid.PICC_ReadCardSerial() == true)
-{
-  String uid = getUID();
-  onCardScanned(uid);
-  rfid.PICC_HaltA();
-  rfid.PCD_StopCrypto1();
-}
+  {
+    String uid = getUID();
+    // Card detection
+  if (rfid.PICC_IsNewCardPresent() == true && rfid.PICC_ReadCardSerial() == true)
+  {
+    String uid = getUID();
+    onCardScanned(uid);
+    rfid.PICC_HaltA();
+    rfid.PCD_StopCrypto1();
+  }
 
 
-if (isAuthorized(uid) == true)
-{
-  Serial.println("ACCESS GRANTED");
-}
-else
-{
-  Serial.println("ACCESS DENIED");
-}
 
-  // Timer
-  if (indicatorOn == true && millis() - indicatorStart >= indicatorTime)
-{
-  onTimerExpired();
-}
+    // Timer
+    if (indicatorOn == true && millis() - indicatorStart >= indicatorTime)
+  {
+    onTimerExpired();
+  }
 
 }
